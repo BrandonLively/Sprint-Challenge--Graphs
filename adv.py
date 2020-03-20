@@ -28,7 +28,49 @@ player = Player(world.starting_room)
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
+traversal_stack = []
+visited = set()
 
+current_room = world.rooms[0]
+
+while len(visited) < len(world.rooms):
+    choices = []
+    visited.add(current_room.id)
+    if current_room.n_to is not None and current_room.n_to.id not in visited:
+        choices.append('n')
+    if current_room.s_to is not None and current_room.s_to.id not in visited:
+        choices.append('s')
+    if current_room.e_to is not None and current_room.e_to.id not in visited:
+        choices.append('e')
+    if current_room.w_to is not None and current_room.w_to.id not in visited:
+        choices.append('w')
+    elif len(choices) == 0:
+        last_move = traversal_stack.pop()
+        if last_move == 'n':
+            current_room = current_room.s_to
+            traversal_path.append('s')
+        if last_move == 's':
+            current_room = current_room.n_to
+            traversal_path.append('n')
+        if last_move == 'e':
+            current_room = current_room.w_to
+            traversal_path.append('w')
+        if last_move == 'w':
+            current_room = current_room.e_to
+            traversal_path.append('e')
+
+    if len(choices) > 0:
+        choice = random.choice(choices)
+        traversal_path.append(choice)
+        traversal_stack.append(choice)
+        if choice == 'n':
+            current_room = current_room.n_to
+        if choice == 's':
+            current_room = current_room.s_to
+        if choice == 'e':
+            current_room = current_room.e_to
+        if choice == 'w':
+            current_room = current_room.w_to
 
 
 # TRAVERSAL TEST
