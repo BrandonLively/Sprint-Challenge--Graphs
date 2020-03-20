@@ -29,16 +29,13 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 traversal_stack = []
-visited = []
-
-directions = ['n', 's', 'e', 'w']
+visited = set()
 
 current_room = world.rooms[0]
 
 while len(visited) < len(world.rooms):
     choices = []
-    if current_room.id not in visited:
-        visited.append(current_room.id)
+    visited.add(current_room.id)
     if current_room.n_to is not None and current_room.n_to.id not in visited:
         choices.append('n')
     if current_room.s_to is not None and current_room.s_to.id not in visited:
